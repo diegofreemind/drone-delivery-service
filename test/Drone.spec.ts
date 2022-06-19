@@ -1,4 +1,4 @@
-import Drone from '../src/Drone';
+import Drone from '../src/entities/Drone';
 
 describe('Should handle Drone instances', () => {
   test('Should instantiate a new Drone', () => {
