@@ -10,8 +10,7 @@ describe('Should handle Location instances', () => {
 
     expect(deliveryPackage).toBeDefined();
     expect(deliveryLocation).toBeDefined();
-    expect(deliveryLocation.getPackages).toHaveLength(1);
+    expect(deliveryLocation.getPackages).toBe(100);
     expect(deliveryLocation.getName).toBe('LocationNameA');
-    expect(deliveryLocation.getPackages[0].getWeight).toBe(100);
   });
 });
