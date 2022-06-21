@@ -1,12 +1,12 @@
 import { v4 } from 'uuid';
 import Drone from '../entities/Drone';
-import DeliveryPackage from '../entities/Package';
 import DeliveryLocation from '../entities/Location';
 import { IDroneDelivery, ITripCollection } from '../shared/interfaces';
+import { createSquadMember, createDeliveryLocation } from '../shared/factories';
 
 import { validatorDto } from '../shared/validatorDTO';
-import { LocationsDTO, ILocation } from './DTOs/LocationsDTO';
-import { DroneSquadDTO, IDroneSquadMember } from './DTOs/DronesDTO';
+import { LocationsDTO } from './DTOs/LocationsDTO';
+import { DroneSquadDTO } from './DTOs/DronesDTO';
 
 export default class DeliveryUseCase {
   constructor() {}
@@ -18,8 +18,8 @@ export default class DeliveryUseCase {
     const { drones } = droneSquadInfo;
     const { locations } = locationsInfo;
 
-    const droneSquad = drones.map(this.createSquadMember);
-    const deliveryLocations = locations.map(this.createDeliveryLocation);
+    const droneSquad = drones.map(createSquadMember);
+    const deliveryLocations = locations.map(createDeliveryLocation);
 
     return this.calculateTrips(droneSquad, deliveryLocations);
   }
@@ -124,17 +124,5 @@ export default class DeliveryUseCase {
     return next
       ? location.getPackages + next?.getPackages
       : location.getPackages;
-  }
-
-  createSquadMember(member: IDroneSquadMember) {
-    return new Drone(member.maxWeight, member.name);
-  }
-
-  createDeliveryLocation(deliveryLocation: ILocation) {
-    const deliveryPackage = new DeliveryPackage(
-      deliveryLocation.packagesWeight
-    );
-
-    return new DeliveryLocation(deliveryLocation.name, [deliveryPackage]);
   }
 }

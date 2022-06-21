@@ -1,9 +1,11 @@
-import Drone from '../src/entities/Drone';
-import DeliveryLocation from '../src/entities/Location';
 import { ILocation } from '../src/useCases/DTOs/LocationsDTO';
-
 import DeliveryUseCase from '../src/useCases/DeliveryUseCase';
 import { IDroneSquadMember } from '../src/useCases/DTOs/DronesDTO';
+
+import {
+  createSquadMember,
+  createDeliveryLocation,
+} from '../src/shared/factories';
 
 const locationsPayload: ILocation[] = [
   {
@@ -67,11 +69,9 @@ describe('Should handle drone squad deliveries', () => {
 
     const deliveryUseCase = new DeliveryUseCase();
 
-    const droneSquad = dronesPayload.map(deliveryUseCase.createSquadMember);
+    const droneSquad = dronesPayload.map(createSquadMember);
 
-    const locations = locationsPayload.map(
-      deliveryUseCase.createDeliveryLocation
-    );
+    const locations = locationsPayload.map(createDeliveryLocation);
 
     const mappedDeliveries = deliveryUseCase.calculateTrips(
       droneSquad,

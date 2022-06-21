@@ -8,5 +8,5 @@ export interface ILocation {
 export class LocationsDTO {
   @IsArray()
   @ArrayMinSize(1)
-  readonly locations!: ILocation[];
+  locations!: ILocation[];
 }
