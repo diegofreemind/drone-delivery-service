@@ -1,9 +1,9 @@
 import Drone from '../src/entities/Drone';
 import DeliveryLocation from '../src/entities/Location';
-import { ILocation } from '../src/useCases/LocationsDTO';
+import { ILocation } from '../src/useCases/DTOs/LocationsDTO';
 
 import DeliveryUseCase from '../src/useCases/DeliveryUseCase';
-import { IDroneSquadMember } from '../src/useCases/DronesDTO';
+import { IDroneSquadMember } from '../src/useCases/DTOs/DronesDTO';
 
 const locationsPayload: ILocation[] = [
   {
@@ -87,7 +87,7 @@ describe('Should handle drone squad deliveries', () => {
     expect(mappedDeliveries).toHaveLength(2);
     expect(totalMapped).toBe(locations.length);
 
-    for (let droneRoute of mappedDeliveries) {
+    for (const droneRoute of mappedDeliveries) {
       expect(droneRoute.tripId).toBeDefined();
       expect(droneRoute.description).toBeDefined();
 

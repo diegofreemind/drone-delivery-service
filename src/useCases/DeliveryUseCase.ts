@@ -5,8 +5,8 @@ import DeliveryLocation from '../entities/Location';
 import { IDroneDelivery, ITripCollection } from '../shared/interfaces';
 
 import { validatorDto } from '../shared/validatorDTO';
-import { LocationsDTO, ILocation } from './LocationsDTO';
-import { DroneSquadDTO, IDroneSquadMember } from './DronesDTO';
+import { LocationsDTO, ILocation } from './DTOs/LocationsDTO';
+import { DroneSquadDTO, IDroneSquadMember } from './DTOs/DronesDTO';
 
 export default class DeliveryUseCase {
   constructor() {}
@@ -48,14 +48,14 @@ export default class DeliveryUseCase {
   }
 
   calculateDeliveries(droneSquad: Drone[], locations: DeliveryLocation[]) {
-    let squadLocationsAsMap = new Map();
+    const squadLocationsAsMap = new Map();
     let targetLocations: DeliveryLocation[] = [];
 
     const sortedDroneSquad = this.sortDronesByHighestWeight(droneSquad);
     const sortedLocations = this.sortLocationsByLowestWeight(locations);
 
     const deliveries: IDroneDelivery[] = sortedDroneSquad.map((drone) => {
-      let remainingLocations =
+      const remainingLocations =
         targetLocations.length > 0 ? targetLocations : sortedLocations;
 
       const { remaining, idleCapacity, targets } = this.matchLocationsByDrone(
@@ -85,6 +85,7 @@ export default class DeliveryUseCase {
     squadLocationsAsMap: Map<DeliveryLocation, string>
   ) {
     let idleCapacity = drone.getMaxWeight;
+    const droneTargets: DeliveryLocation[] = [];
 
     sortedLocations.map((item, index, array) => {
       const nextItem = array[index + 1];
@@ -95,21 +96,18 @@ export default class DeliveryUseCase {
       if (!isAlreadyTagged && idleCapacity >= targetWeight) {
         if (nextItem) {
           squadLocationsAsMap.set(nextItem, drone.getId!);
+          droneTargets.push(nextItem);
         }
 
+        droneTargets.push(item);
         squadLocationsAsMap.set(item, drone.getId!);
         idleCapacity -= targetWeight;
       }
     });
 
-    const targets =
-      idleCapacity < drone.getMaxWeight
-        ? sortedLocations.filter((i) => squadLocationsAsMap.has(i))
-        : [];
-
     return {
-      targets,
       idleCapacity,
+      targets: droneTargets,
       remaining: sortedLocations.filter((i) => !squadLocationsAsMap.has(i)),
     };
   }

@@ -4,13 +4,26 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "tsc",
+    "start": "node dist/index",
+    "lint": "eslint \"{src,test}/**/*.ts\" --fix",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "start:dev": "tsnd --transpile-only --respawn --ignore-watch node_modules src/index.ts"
   },
   "devDependencies": {
     "@types/jest": "^28.1.2",
     "@types/uuid": "^8.3.4",
+    "@typescript-eslint/eslint-plugin": "^5.29.0",
+    "@typescript-eslint/parser": "^5.29.0",
+    "eslint": "^8.18.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "jest": "^28.1.1",
+    "prettier": "^2.7.1",
     "ts-jest": "^28.0.5",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^4.7.4"
   },
   "jest": {
@@ -34,6 +47,8 @@
   "dependencies": {
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
+    "commander": "^9.3.0",
+    "csv-parse": "^5.2.0",
     "uuid": "^8.3.2"
   }
 }
