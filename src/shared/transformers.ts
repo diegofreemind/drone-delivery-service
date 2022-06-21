@@ -5,35 +5,63 @@ import { createReadStream } from 'fs';
 import { parse } from 'csv-parse';
 import { resolve } from 'path';
 
-function handleCSVInput(inputPath: string, outputPath: string) {
+async function handleCSVInput(inputPath: string, outputPath: string) {
   const inputAbsPath = resolve(process.cwd(), inputPath);
   const outputAbsPath = resolve(process.cwd(), outputPath);
 
-  let droneSquadInfo: DroneSquadDTO;
+  const l = await generateLocationInfo(inputAbsPath);
+  const d = await generateDroneSquadInfo(inputAbsPath);
+
+  return { l, d };
+}
+
+async function generateDroneSquadInfo(inputAbsPath: string) {
+  const droneSquadInfo: DroneSquadDTO = {
+    drones: [],
+  };
+
+  return new Promise((resolve, reject) => {
+    createReadStream(inputAbsPath)
+      .pipe(parse({ delimiter: ',', to_line: 1 }))
+      .on('data', (row: string[]) => {
+        console.log({ row });
+        droneSquadInfo.drones.push({
+          name: row[0],
+          maxWeight: Number(row[1].replace(/\W/g, '')),
+        });
+      })
+      .on('error', (err) => {
+        console.log(err);
+        reject(err);
+      })
+      .on('end', () => {
+        resolve(droneSquadInfo);
+      });
+  });
+}
+
+async function generateLocationInfo(inputAbsPath: string) {
   const locationsInfo: LocationsDTO = {
     locations: [],
   };
 
-  createReadStream(inputAbsPath)
-    .pipe(parse({ delimiter: ',', fromLine: 2 }))
-    .on('data', function (row: any) {
-      console.log(row);
-
-      // [ '[LocationA]', ' [200]' ]
-      const [currentLocation, weight] = row;
-
-      const parsedLocation = {
-        name: currentLocation,
-        packagesWeight: weight.replace(/\W/g, ''),
-      } as ILocation;
-
-      locationsInfo.locations.push(parsedLocation);
-
-      console.log({ parsedLocation, row });
-    })
-    .on('end', function () {
-      console.log({ locationsInfo });
-    });
+  return new Promise((resolve, reject) => {
+    createReadStream(inputAbsPath)
+      .pipe(parse({ delimiter: ',', fromLine: 2 }))
+      .on('data', (row: string[]) => {
+        locationsInfo.locations.push({
+          name: row[0],
+          packagesWeight: Number(row[1].replace(/\W/g, '')),
+        });
+      })
+      .on('error', (err) => {
+        console.log(err);
+        reject(err);
+      })
+      .on('end', () => {
+        resolve(locationsInfo);
+      });
+  });
 }
 
 export { handleCSVInput };

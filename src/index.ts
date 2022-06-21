@@ -10,9 +10,11 @@ program
   .description('Process the locations and drones files')
   .argument('[inputPath]', 'Path for input file', './input.csv')
   .argument('[outputPath]', 'Path for output file', './output.csv')
-  .action((inputPath, outputPath) => {
+  .action(async (inputPath, outputPath) => {
     // deliveryUseCase.execute();
-    handleCSVInput(inputPath, outputPath);
+    const res = await handleCSVInput(inputPath, outputPath);
+
+    console.log(JSON.stringify(res));
   });
 
 program.parse();
