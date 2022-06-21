@@ -1,3 +1,4 @@
+import { v4 } from 'uuid';
 import Drone from '../entities/Drone';
 import DeliveryPackage from '../entities/Package';
 import DeliveryLocation from '../entities/Location';
@@ -35,8 +36,8 @@ export default class DeliveryUseCase {
 
     mappedDeliveries!.push({
       deliveries,
-      tripId: Math.random().toString(),
-      description: Math.random().toString(),
+      tripId: v4(),
+      description: `Trip #${mappedDeliveries.length + 1}`,
     });
 
     if (unallocated.length > 0) {

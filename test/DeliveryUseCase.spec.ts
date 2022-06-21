@@ -87,9 +87,14 @@ describe('Should handle drone squad deliveries', () => {
     expect(mappedDeliveries).toHaveLength(2);
     expect(totalMapped).toBe(locations.length);
 
-    expect(mappedDeliveries[0].deliveries[0]).toHaveProperty('drone');
-    expect(mappedDeliveries[0].deliveries[0]).toHaveProperty('targets');
-    expect(mappedDeliveries[0].deliveries[0]).toHaveProperty('idleCapacity');
+    for (let x of mappedDeliveries) {
+      expect(x.tripId).toBeDefined();
+      expect(x.description).toBeDefined();
+
+      expect(mappedDeliveries[0].deliveries[0]).toHaveProperty('drone');
+      expect(mappedDeliveries[0].deliveries[0]).toHaveProperty('targets');
+      expect(mappedDeliveries[0].deliveries[0]).toHaveProperty('idleCapacity');
+    }
   });
 
   test('Should throw an error when not informing locations', async () => {
