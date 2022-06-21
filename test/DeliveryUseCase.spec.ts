@@ -22,70 +22,42 @@ const locationsPayload: ILocation[] = [
     name: 'LocationD',
     packagesWeight: 20,
   },
+  {
+    name: 'LocationE',
+    packagesWeight: 120,
+  },
+  {
+    name: 'LocationF',
+    packagesWeight: 30,
+  },
+  {
+    name: 'LocationG',
+    packagesWeight: 50,
+  },
+  {
+    name: 'LocationH',
+    packagesWeight: 20,
+  },
+  {
+    name: 'LocationI',
+    packagesWeight: 60,
+  },
+  {
+    name: 'LocationJ',
+    packagesWeight: 60,
+  },
 ];
 
 describe('Should handle drone squad deliveries', () => {
-  test('Should execute a delivery at 4 locations', async () => {
-    const deliveryUseCase = new DeliveryUseCase();
-
+  test('Should calculate the most efficient routes for a given drone squad(3)', () => {
     const dronesPayload: IDroneSquadMember[] = [
-      {
-        name: 'Drone A',
-        maxWeight: 200,
-      },
-    ];
-
-    const { droneSquad, deliveryLocations } = await deliveryUseCase.execute(
-      {
-        drones: dronesPayload,
-      },
-      {
-        locations: locationsPayload,
-      }
-    );
-
-    expect(droneSquad).toHaveLength(1);
-    expect(deliveryLocations).toHaveLength(4);
-    expect(droneSquad[0]).toBeInstanceOf(Drone);
-    expect(deliveryLocations[0]).toBeInstanceOf(DeliveryLocation);
-
-    expect(droneSquad[0]).toHaveProperty('id');
-    expect(deliveryLocations[0]).toHaveProperty('id');
-  });
-
-  test.only('Should calculate the most efficient routes for a given drone squad', () => {
-    const addLocations: ILocation[] = [
-      {
-        name: 'LocationE',
-        packagesWeight: 120,
-      },
-      {
-        name: 'LocationF',
-        packagesWeight: 30,
-      },
-      {
-        name: 'LocationG',
-        packagesWeight: 50,
-      },
-      {
-        name: 'LocationH',
-        packagesWeight: 20,
-      },
-      {
-        name: 'LocationI',
-        packagesWeight: 60,
-      },
-    ];
-
-    // TODO: simulate Drone B -> 150 ( 1 location missing )
-    const dronesPayload: IDroneSquadMember[] = [
-      {
-        name: 'Drone A',
-        maxWeight: 200,
-      },
       {
         name: 'Drone B',
-        maxWeight: 180,
+        maxWeight: 150,
+      },
+      {
+        name: 'Drone A',
+        maxWeight: 200,
       },
       {
         name: 'Drone C',
@@ -97,33 +69,16 @@ describe('Should handle drone squad deliveries', () => {
 
     const droneSquad = dronesPayload.map(deliveryUseCase.createSquadMember);
 
-    const locations = addLocations
-      .concat(locationsPayload)
-      .map(deliveryUseCase.createDeliveryLocation);
-
-    const routes = deliveryUseCase.calculateTheMostEfficientDeliveries(
-      droneSquad,
-      locations
+    const locations = locationsPayload.map(
+      deliveryUseCase.createDeliveryLocation
     );
 
-    console.log({ routes });
+    const routes = deliveryUseCase.calculateDeliveries(droneSquad, locations);
 
-    // const [singleCalculated] = calculatedRoutes;
-    // const [idleCapacity] = idleCapactityCollection;
-
-    // const unhandledPackages = locations.filter(
-    //   (loc) => !singleCalculated.targets.find((i) => i.getName === loc.getName)
-    // );
-
-    // const missedPackages = unhandledPackages.find(
-    //   (i) => i.getPackages < idleCapacity.idle
-    // );
-
-    // console.log({ unhandledPackages, missedPackages });
-
-    // expect(singleCalculated).toBeDefined();
-    // expect(missedPackages).toBeUndefined();
-    // expect(singleCalculated.targets).toHaveLength(6);
+    expect(routes).toHaveLength(3);
+    expect(routes[0]).toHaveProperty('drone');
+    expect(routes[0]).toHaveProperty('targets');
+    expect(routes[0]).toHaveProperty('idleCapacity');
   });
 
   test('Should throw an error when not informing locations', async () => {
@@ -151,20 +106,13 @@ describe('Should handle drone squad deliveries', () => {
   test('Should throw an error when not informing drones', async () => {
     const deliveryUseCase = new DeliveryUseCase();
 
-    const locationsPayload: ILocation[] = [
-      {
-        name: 'LocationA',
-        packagesWeight: 120,
-      },
-    ];
-
     await expect(
       deliveryUseCase.execute(
         {
           drones: [],
         },
         {
-          locations: locationsPayload,
+          locations: [locationsPayload[0]],
         }
       )
     ).rejects.toThrowError();

@@ -1,11 +1,11 @@
 import Drone from '../entities/Drone';
 import DeliveryPackage from '../entities/Package';
 import DeliveryLocation from '../entities/Location';
+import { IDroneDelivery } from '../shared/interfaces';
 
 import { validatorDto } from '../shared/validatorDTO';
 import { LocationsDTO, ILocation } from './LocationsDTO';
 import { DroneSquadDTO, IDroneSquadMember } from './DronesDTO';
-import { IDroneIdleCapacity, ICalculatedRoute } from '../shared/interfaces';
 
 export default class DeliveryUseCase {
   constructor() {}
@@ -20,90 +20,81 @@ export default class DeliveryUseCase {
     const droneSquad = drones.map(this.createSquadMember);
     const deliveryLocations = locations.map(this.createDeliveryLocation);
 
-    return { droneSquad, deliveryLocations };
+    return this.calculateDeliveries(droneSquad, deliveryLocations);
   }
 
-  calculateTheMostEfficientDeliveries(
-    droneSquad: Drone[],
-    locations: DeliveryLocation[]
-  ) {
-    // https://www.geeksforgeeks.org/given-two-unsorted-arrays-find-pairs-whose-sum-x/
-
+  calculateDeliveries(droneSquad: Drone[], locations: DeliveryLocation[]) {
     let squadLocationsAsMap = new Map();
-    let remainingLocations: DeliveryLocation[] = [];
+    let targetLocations: DeliveryLocation[] = [];
 
-    // TODO: if non tagged location:
-    // TODO: @find droneIdleCapacity > nonTaggedLocation.getPackages
-    // TODO: @compare droneIdleCapacity.targets.sum x nonTaggedLocation.getPackages ( switch )
+    const sortedDroneSquad = this.sortDronesByHighestWeight(droneSquad);
+    const sortedLocations = this.sortLocationsByLowestWeight(locations);
 
-    const routes = droneSquad.map((drone) => {
-      remainingLocations =
-        remainingLocations.length === 0 ? locations : remainingLocations;
+    const deliveries = sortedDroneSquad.map((drone) => {
+      let remainingLocations = targetLocations[1]
+        ? targetLocations
+        : sortedLocations;
 
-      const { mapped, idle, remaining } = this.matchLocationsByDrone(
+      const { remaining, idleCapacity, targets } = this.matchLocationsByDrone(
         drone,
         remainingLocations,
         squadLocationsAsMap
       );
 
-      console.log({ drone });
-      console.log({ mapped, idle, remaining });
+      targetLocations = this.sortLocationsByLowestWeight(remaining);
 
-      remainingLocations = remaining;
-      return { mapped, idle };
+      return {
+        drone,
+        targets,
+        idleCapacity,
+      };
     });
 
-    return routes;
+    return deliveries;
   }
 
   matchLocationsByDrone(
     drone: Drone,
-    locations: DeliveryLocation[],
+    sortedLocations: DeliveryLocation[],
     squadLocationsAsMap: Map<DeliveryLocation, string>
   ) {
-    const sortedLocations = locations.sort(
-      (a, b) => a.getPackages - b.getPackages
-    );
-
-    console.log({
-      sorted: sortedLocations.length,
-      mapLength: squadLocationsAsMap.size,
-    });
-
-    let droneIdleCapacity = drone.getMaxWeight;
+    let idleCapacity = drone.getMaxWeight;
 
     sortedLocations.map((item, index, array) => {
-      const nextIndex = array[index + 1] ? index + 1 : false;
+      const nextItem = array[index + 1];
 
-      const targetWeight = !nextIndex
-        ? item.getPackages
-        : item.getPackages + array[nextIndex]?.getPackages;
-
+      const targetWeight = this.calculateTargetWeight(item, nextItem);
       const isAlreadyTagged = squadLocationsAsMap.has(item);
 
-      console.log(
-        isAlreadyTagged,
-        droneIdleCapacity,
-        targetWeight,
-        item.getPackages,
-        nextIndex
-      );
-
-      if (!isAlreadyTagged && droneIdleCapacity >= targetWeight) {
-        if (nextIndex) {
-          squadLocationsAsMap.set(array[nextIndex], drone.getId!);
+      if (!isAlreadyTagged && idleCapacity >= targetWeight) {
+        if (nextItem) {
+          squadLocationsAsMap.set(nextItem, drone.getId!);
         }
 
         squadLocationsAsMap.set(item, drone.getId!);
-        droneIdleCapacity -= targetWeight;
+        idleCapacity -= targetWeight;
       }
     });
 
     return {
-      idle: droneIdleCapacity,
-      mapped: squadLocationsAsMap.entries(),
-      remaining: locations.filter((i) => !squadLocationsAsMap.has(i)),
+      idleCapacity,
+      targets: sortedLocations.filter((i) => squadLocationsAsMap.has(i)),
+      remaining: sortedLocations.filter((i) => !squadLocationsAsMap.has(i)),
     };
+  }
+
+  sortLocationsByLowestWeight(locations: DeliveryLocation[]) {
+    return locations.sort((a, b) => a.getPackages - b.getPackages);
+  }
+
+  sortDronesByHighestWeight(droneSquad: Drone[]) {
+    return droneSquad.sort((a, b) => b.getMaxWeight - a.getMaxWeight);
+  }
+
+  calculateTargetWeight(location: DeliveryLocation, next?: DeliveryLocation) {
+    return next
+      ? location.getPackages + next?.getPackages
+      : location.getPackages;
   }
 
   createSquadMember(member: IDroneSquadMember) {
