@@ -1,8 +1,10 @@
 import { DroneSquadDTO } from '../useCases/DTOs/DronesDTO';
 import { LocationsDTO } from '../useCases/DTOs/LocationsDTO';
+import { IDroneDelivery, ITripCollection } from './interfaces';
 
-import { createReadStream } from 'fs';
 import { parse } from 'csv-parse';
+
+import { createReadStream, appendFile } from 'fs';
 import { resolve } from 'path';
 
 async function handleCSVInput(inputPath: string) {
@@ -12,6 +14,77 @@ async function handleCSVInput(inputPath: string) {
   const droneSquadPayload = await generateDroneSquadInfo(inputAbsPath);
 
   return { locationPayload, droneSquadPayload };
+}
+
+async function handleCSVOutput(
+  response: ITripCollection[],
+  outputPath: string
+) {
+  const outputAbsPath = resolve(process.cwd(), outputPath);
+  const parsedOutput = generateOutputResponse(response);
+
+  console.log(parsedOutput);
+
+  for (const item in parsedOutput) {
+    if (Object.prototype.hasOwnProperty.call(parsedOutput, item)) {
+      appendFile(
+        outputAbsPath,
+        parsedOutput[item].toString(),
+        'utf-8',
+        (err) => {
+          if (err) {
+            console.error(err);
+          }
+        }
+      );
+    }
+  }
+}
+
+function generateOutputResponse(response: ITripCollection[]) {
+  const dronesByTrips: any = {};
+
+  response.map((trip) => {
+    trip.deliveries.map((delivery) => {
+      const droneId = delivery.drone.getId;
+      const description = trip.description;
+
+      if (droneId) {
+        const droneItem = dronesByTrips[droneId!];
+        const isInitial = droneItem ? false : true;
+
+        const plainOutput = formatOutputToPlain(
+          handleOutputFormat(delivery, description, droneId),
+          isInitial
+        );
+
+        dronesByTrips[droneId!] = !isInitial
+          ? droneItem.concat([plainOutput])
+          : [plainOutput];
+      }
+    });
+  });
+
+  return dronesByTrips;
+}
+
+function formatOutputToPlain(formatted: any, isInitial: boolean) {
+  return isInitial
+    ? `\n${formatted.name}\n${formatted.description}\n${formatted.locations}\n`
+    : `${formatted.description}\n${formatted.locations}\n`;
+}
+
+function handleOutputFormat(
+  delivery: IDroneDelivery,
+  description: string,
+  droneId: string
+) {
+  return {
+    id: droneId,
+    description: description,
+    name: delivery.drone.getName,
+    locations: delivery.targets.map((i) => i.getName).join(','),
+  };
 }
 
 async function generateDroneSquadInfo(
@@ -70,4 +143,4 @@ async function generateLocationInfo(
   });
 }
 
-export { handleCSVInput };
+export { handleCSVInput, handleCSVOutput };

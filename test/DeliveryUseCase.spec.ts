@@ -57,17 +57,19 @@ describe('Should handle drone squad deliveries', () => {
       drones: dronesPayload,
     };
 
-    console.log(JSON.stringify({ locationsInfo, droneSquadInfo }));
-
     const mappedDeliveries = await deliveryUseCase.execute(
       droneSquadInfo,
       locationsInfo
     );
 
-    // console.log(JSON.stringify(mappedDeliveries[0]));
-    // console.log(mappedDeliveries.length);
+    const totalMapped = mappedDeliveries.reduce(
+      (acc, drone) =>
+        acc + drone.deliveries.reduce((ac, c) => ac + c.targets.length, 0),
+      0
+    );
 
     expect(mappedDeliveries).toHaveLength(4);
+    expect(totalMapped).toBe(locationsPayload.length);
   });
 
   test('Should throw an error when not informing locations', async () => {

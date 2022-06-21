@@ -1,58 +1,218 @@
-{
-  "deliveries": [
-    {
-      "drone": {
-        "id": "afe6e6be-d3ae-40f5-b029-8c46ba2bbe06",
-        "maxWeight": 200,
-        "name": "[DroneA]"
+[
+  {
+    "deliveries": [
+      {
+        "drone": {
+          "id": "a7ce07a6-9ba2-45fd-ba1a-e1402f8dacc3",
+          "maxWeight": 250,
+          "name": " [DroneB]"
+        },
+        "targets": [
+          {
+            "id": "28331ae0-bd27-401c-90ca-b7d51e993bf0",
+            "name": "[LocationO]",
+            "packages": [
+              { "id": "6f46ec37-e18a-47f1-98eb-0e5c1ec251ec", "weight": 20 }
+            ]
+          },
+          {
+            "id": "aae8b665-132c-4267-9dda-398e51c828ab",
+            "name": "[LocationL]",
+            "packages": [
+              { "id": "77f09f72-6d77-4c18-8a82-1247fd8ec77d", "weight": 20 }
+            ]
+          },
+          {
+            "id": "60747eec-63c7-4656-9f37-f1acfbbd3c5e",
+            "name": "[LocationN]",
+            "packages": [
+              { "id": "1d26f833-6989-4b0d-a193-6bfe261f6624", "weight": 30 }
+            ]
+          },
+          {
+            "id": "3f2e7a36-b63f-413f-8f16-b4ac7c467de7",
+            "name": "[LocationK]",
+            "packages": [
+              { "id": "3f3fab6b-45b3-4bfe-b769-38de190010d1", "weight": 30 }
+            ]
+          },
+          {
+            "id": "1ca3c95e-127d-403b-9644-ae48b33f2da6",
+            "name": "[LocationG]",
+            "packages": [
+              { "id": "7b1ce243-1f23-4835-b0e2-f952ec827d72", "weight": 50 }
+            ]
+          },
+          {
+            "id": "4bdfdfea-e423-4db0-99e4-1fd720b28241",
+            "name": "[LocationC]",
+            "packages": [
+              { "id": "227714d0-fcc9-4e29-aedc-f3eca567c79c", "weight": 50 }
+            ]
+          }
+        ],
+        "idleCapacity": 50
       },
-      "targets": [
-        {
-          "id": "30edd405-4e39-490b-9b22-b4baff5ae26c",
-          "name": "[LocationO]",
-          "packages": [
-            { "id": "7dfcbd74-1ee1-400c-9961-e1dac3ca5671", "weight": 20 }
-          ]
+      {
+        "drone": {
+          "id": "1e181431-e2c9-4a38-af96-b5aabc68a013",
+          "maxWeight": 200,
+          "name": "[DroneA]"
         },
-        {
-          "id": "f6d5bfdb-43d8-4e66-aa20-1bc371dbe257",
-          "name": "[LocationL]",
-          "packages": [
-            { "id": "d6b2785d-1bad-487f-a625-14aaf374bca1", "weight": 20 }
-          ]
+        "targets": [
+          {
+            "id": "b5b0bf85-ca17-4c1e-a713-95c23d606940",
+            "name": "[LocationM]",
+            "packages": [
+              { "id": "8376248d-8d6f-4ac1-91ee-4124d18fceea", "weight": 50 }
+            ]
+          },
+          {
+            "id": "357b1480-bce6-446c-b866-4feb23078ab0",
+            "name": "[LocationJ]",
+            "packages": [
+              { "id": "295e4b4e-3cfe-4b0f-b273-5a0a11c818f2", "weight": 50 }
+            ]
+          }
+        ],
+        "idleCapacity": 100
+      }
+    ],
+    "tripId": "af7c64b7-493d-4b93-981d-02a1ffaf2e42",
+    "description": "Trip #1"
+  },
+  {
+    "deliveries": [
+      {
+        "drone": {
+          "id": "a7ce07a6-9ba2-45fd-ba1a-e1402f8dacc3",
+          "maxWeight": 250,
+          "name": " [DroneB]"
         },
-        {
-          "id": "d935dd17-4b14-4b2e-9070-22ba366afe4c",
-          "name": "[LocationN]",
-          "packages": [
-            { "id": "86c9ad91-d413-41b1-b9ee-57318514552d", "weight": 30 }
-          ]
+        "targets": [
+          {
+            "id": "c2286575-6da8-4602-86b3-9567464d2d09",
+            "name": "[LocationH]",
+            "packages": [
+              { "id": "3e2eac95-ffd0-4f44-a1f1-fd81e9c69da1", "weight": 80 }
+            ]
+          },
+          {
+            "id": "6512662e-32eb-4b7e-9f8e-891a49304045",
+            "name": "[LocationI]",
+            "packages": [
+              { "id": "c3177722-6dfe-432b-9fc3-89b673ce5716", "weight": 70 }
+            ]
+          }
+        ],
+        "idleCapacity": 100
+      },
+      {
+        "drone": {
+          "id": "1e181431-e2c9-4a38-af96-b5aabc68a013",
+          "maxWeight": 200,
+          "name": "[DroneA]"
         },
-        {
-          "id": "bed7c123-a940-4840-81fd-1ab8891167c0",
-          "name": "[LocationK]",
-          "packages": [
-            { "id": "2938d65a-64cb-4b65-ad60-a3ade876fbea", "weight": 30 }
-          ]
+        "targets": [
+          {
+            "id": "5e9d9dc9-d6f9-46c2-886a-be25970bd926",
+            "name": "[LocationE]",
+            "packages": [
+              { "id": "556f57dc-936d-44b1-9116-d42021a8d345", "weight": 100 }
+            ]
+          },
+          {
+            "id": "b6b742b0-0598-45dc-a1a0-5117c6c4bf4d",
+            "name": "[LocationP]",
+            "packages": [
+              { "id": "042b6b14-2496-4709-9004-bafd5de9cac4", "weight": 90 }
+            ]
+          }
+        ],
+        "idleCapacity": 10
+      }
+    ],
+    "tripId": "c3608ef0-be3a-4f17-8435-4e5005bfe8af",
+    "description": "Trip #2"
+  },
+  {
+    "deliveries": [
+      {
+        "drone": {
+          "id": "a7ce07a6-9ba2-45fd-ba1a-e1402f8dacc3",
+          "maxWeight": 250,
+          "name": " [DroneB]"
         },
-        {
-          "id": "6c4839cd-46cc-4897-8e16-b28b645a6083",
-          "name": "[LocationG]",
-          "packages": [
-            { "id": "98c93f99-f6ae-43fd-9233-9ab8f9ac9cdc", "weight": 50 }
-          ]
+        "targets": [
+          {
+            "id": "af92c6f7-7e2d-44f8-bb1e-d3c1a6ef2633",
+            "name": "[LocationF]",
+            "packages": [
+              { "id": "f385a064-8459-4de9-aaf8-fa5b03386803", "weight": 200 }
+            ]
+          }
+        ],
+        "idleCapacity": 50
+      },
+      {
+        "drone": {
+          "id": "1e181431-e2c9-4a38-af96-b5aabc68a013",
+          "maxWeight": 200,
+          "name": "[DroneA]"
         },
-        {
-          "id": "31b07400-57df-48dd-a967-8b643e39d875",
-          "name": "[LocationC]",
-          "packages": [
-            { "id": "26c08874-ec1b-4a26-8f7c-8c65d9911942", "weight": 50 }
-          ]
-        }
-      ],
-      "idleCapacity": 0
-    }
-  ],
-  "tripId": "5e0a63c7-2cb9-4ad0-8137-4cb9095463e9",
-  "description": "Trip #1"
-}
+        "targets": [
+          {
+            "id": "b4e5fecb-fe94-42fd-b159-6f954ed74794",
+            "name": "[LocationA]",
+            "packages": [
+              { "id": "cb38d215-eb73-4e97-addd-98cf51afed5b", "weight": 200 }
+            ]
+          }
+        ],
+        "idleCapacity": 0
+      }
+    ],
+    "tripId": "74903e00-8903-4356-a9ac-aa72f2c0362e",
+    "description": "Trip #3"
+  },
+  {
+    "deliveries": [
+      {
+        "drone": {
+          "id": "a7ce07a6-9ba2-45fd-ba1a-e1402f8dacc3",
+          "maxWeight": 250,
+          "name": " [DroneB]"
+        },
+        "targets": [
+          {
+            "id": "79ade5a0-a437-40c0-95f5-03982d2f7e18",
+            "name": "[LocationD]",
+            "packages": [
+              { "id": "5978e602-4b2e-4c6a-a633-a338ab1ced9d", "weight": 150 }
+            ]
+          }
+        ],
+        "idleCapacity": 100
+      },
+      {
+        "drone": {
+          "id": "1e181431-e2c9-4a38-af96-b5aabc68a013",
+          "maxWeight": 200,
+          "name": "[DroneA]"
+        },
+        "targets": [
+          {
+            "id": "f7a58da4-ee69-4877-bf2f-30f8d7196b6e",
+            "name": "[LocationB]",
+            "packages": [
+              { "id": "a80c1310-24dd-412a-b7c7-aed88e866d7f", "weight": 150 }
+            ]
+          }
+        ],
+        "idleCapacity": 50
+      }
+    ],
+    "tripId": "d7b0c4a7-bfb5-4812-8fd8-a4a857881c41",
+    "description": "Trip #4"
+  }
+]

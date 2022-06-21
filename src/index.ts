@@ -1,4 +1,4 @@
-import { handleCSVInput } from './shared/transformers';
+import { handleCSVInput, handleCSVOutput } from './shared/transformers';
 import { DeliveryUseCase } from './useCases';
 import { Command } from 'commander';
 
@@ -9,17 +9,17 @@ program
   .command('execute')
   .description('Process the locations and drones files')
   .argument('[inputPath]', 'Path for input file', './input.csv')
-  .argument('[outputPath]', 'Path for output file', './output.csv')
+  .argument('[outputPath]', 'Path for output file', './output.txt')
   .action(async (inputPath, outputPath) => {
-    const parsed = await handleCSVInput(inputPath);
+    const parsedInput = await handleCSVInput(inputPath);
+    const { droneSquadPayload, locationPayload } = parsedInput;
 
-    const res = await deliveryUseCase.execute(
-      parsed.droneSquadPayload,
-      parsed.locationPayload
+    const response = await deliveryUseCase.execute(
+      droneSquadPayload,
+      locationPayload
     );
 
-    console.log(JSON.stringify(res));
-    console.log(res.length);
+    await handleCSVOutput(response, outputPath);
   });
 
 program.parse();
