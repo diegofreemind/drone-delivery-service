@@ -1,0 +1,68 @@
+{
+  "default":[
+    {
+      "name": "LocationA",
+      "packagesWeight": 200
+    },
+    {
+      "name": "LocationB",
+      "packagesWeight": 150
+    },
+    {
+      "name": "LocationC",
+      "packagesWeight": 50
+    },
+    {
+      "name": "LocationD",
+      "packagesWeight": 150
+    },
+    {
+      "name": "LocationE",
+      "packagesWeight": 100
+    },
+    {
+      "name": "LocationF",
+      "packagesWeight": 200
+    },
+    {
+      "name": "LocationG",
+      "packagesWeight": 50
+    },
+    {
+      "name": "LocationH",
+      "packagesWeight": 80
+    },
+    {
+      "name": "LocationI",
+      "packagesWeight": 70
+    },
+    {
+      "name": "LocationJ",
+      "packagesWeight": 50
+    },
+    {
+      "name": "LocationK",
+      "packagesWeight": 30
+    },
+    {
+      "name": "LocationL",
+      "packagesWeight": 20
+    },
+    {
+      "name": "LocationM",
+      "packagesWeight": 50
+    },
+    {
+      "name": "LocationN",
+      "packagesWeight": 30
+    },
+    {
+      "name": "LocationO",
+      "packagesWeight": 20
+    },
+    {
+      "name": "LocationP",
+      "packagesWeight": 90
+    }
+  ]
+}

@@ -1,21 +1,22 @@
 import { DroneSquadDTO } from '../useCases/DTOs/DronesDTO';
-import { ILocation, LocationsDTO } from '../useCases/DTOs/LocationsDTO';
+import { LocationsDTO } from '../useCases/DTOs/LocationsDTO';
 
 import { createReadStream } from 'fs';
 import { parse } from 'csv-parse';
 import { resolve } from 'path';
 
-async function handleCSVInput(inputPath: string, outputPath: string) {
+async function handleCSVInput(inputPath: string) {
   const inputAbsPath = resolve(process.cwd(), inputPath);
-  const outputAbsPath = resolve(process.cwd(), outputPath);
 
-  const l = await generateLocationInfo(inputAbsPath);
-  const d = await generateDroneSquadInfo(inputAbsPath);
+  const locationPayload = await generateLocationInfo(inputAbsPath);
+  const droneSquadPayload = await generateDroneSquadInfo(inputAbsPath);
 
-  return { l, d };
+  return { locationPayload, droneSquadPayload };
 }
 
-async function generateDroneSquadInfo(inputAbsPath: string) {
+async function generateDroneSquadInfo(
+  inputAbsPath: string
+): Promise<DroneSquadDTO> {
   const droneSquadInfo: DroneSquadDTO = {
     drones: [],
   };
@@ -24,10 +25,13 @@ async function generateDroneSquadInfo(inputAbsPath: string) {
     createReadStream(inputAbsPath)
       .pipe(parse({ delimiter: ',', to_line: 1 }))
       .on('data', (row: string[]) => {
-        console.log({ row });
-        droneSquadInfo.drones.push({
-          name: row[0],
-          maxWeight: Number(row[1].replace(/\W/g, '')),
+        row.map((item, index, array) => {
+          if (index % 2 === 0 && array[index + 1]) {
+            droneSquadInfo.drones.push({
+              name: item,
+              maxWeight: Number(array[index + 1].replace(/\W/g, '')),
+            });
+          }
         });
       })
       .on('error', (err) => {
@@ -40,7 +44,9 @@ async function generateDroneSquadInfo(inputAbsPath: string) {
   });
 }
 
-async function generateLocationInfo(inputAbsPath: string) {
+async function generateLocationInfo(
+  inputAbsPath: string
+): Promise<LocationsDTO> {
   const locationsInfo: LocationsDTO = {
     locations: [],
   };

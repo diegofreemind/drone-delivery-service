@@ -11,10 +11,15 @@ program
   .argument('[inputPath]', 'Path for input file', './input.csv')
   .argument('[outputPath]', 'Path for output file', './output.csv')
   .action(async (inputPath, outputPath) => {
-    // deliveryUseCase.execute();
-    const res = await handleCSVInput(inputPath, outputPath);
+    const parsed = await handleCSVInput(inputPath);
+
+    const res = await deliveryUseCase.execute(
+      parsed.droneSquadPayload,
+      parsed.locationPayload
+    );
 
     console.log(JSON.stringify(res));
+    console.log(res.length);
   });
 
 program.parse();

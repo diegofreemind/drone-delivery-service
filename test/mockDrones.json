@@ -1,0 +1,16 @@
+{
+  "default": [
+    {
+      "name": "DroneA",
+      "maxWeight": 200
+    },
+    {
+      "name": "DroneB",
+      "maxWeight": 250
+    },
+    {
+      "name": "DroneC",
+      "maxWeight": 100
+    }
+  ]
+}

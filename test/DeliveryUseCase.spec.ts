@@ -1,76 +1,25 @@
-import { ILocation } from '../src/useCases/DTOs/LocationsDTO';
+import { ILocation, LocationsDTO } from '../src/useCases/DTOs/LocationsDTO';
 import DeliveryUseCase from '../src/useCases/DeliveryUseCase';
-import { IDroneSquadMember } from '../src/useCases/DTOs/DronesDTO';
+import mockedLocations from './mockLocations.json';
+import mockedDroneSquad from './mockDrones.json';
+
+import {
+  DroneSquadDTO,
+  IDroneSquadMember,
+} from '../src/useCases/DTOs/DronesDTO';
 
 import {
   createSquadMember,
   createDeliveryLocation,
 } from '../src/shared/factories';
 
-const locationsPayload: ILocation[] = [
-  {
-    name: 'LocationA',
-    packagesWeight: 120,
-  },
-  {
-    name: 'LocationB',
-    packagesWeight: 15,
-  },
-  {
-    name: 'LocationC',
-    packagesWeight: 45,
-  },
-  {
-    name: 'LocationD',
-    packagesWeight: 20,
-  },
-  {
-    name: 'LocationE',
-    packagesWeight: 120,
-  },
-  {
-    name: 'LocationF',
-    packagesWeight: 30,
-  },
-  {
-    name: 'LocationG',
-    packagesWeight: 50,
-  },
-  {
-    name: 'LocationH',
-    packagesWeight: 20,
-  },
-  {
-    name: 'LocationI',
-    packagesWeight: 60,
-  },
-  {
-    name: 'LocationJ',
-    packagesWeight: 60,
-  },
-];
+const locationsPayload: ILocation[] = mockedLocations.default;
+const dronesPayload: IDroneSquadMember[] = mockedDroneSquad.default;
 
 describe('Should handle drone squad deliveries', () => {
-  test('Should calculate the most efficient routes for a given drone squad(3)', () => {
-    const dronesPayload: IDroneSquadMember[] = [
-      {
-        name: 'Drone B',
-        maxWeight: 150,
-      },
-      {
-        name: 'Drone A',
-        maxWeight: 200,
-      },
-      {
-        name: 'Drone C',
-        maxWeight: 120,
-      },
-    ];
-
+  test('Should calculate the most efficient routes for a given drone squad', () => {
     const deliveryUseCase = new DeliveryUseCase();
-
     const droneSquad = dronesPayload.map(createSquadMember);
-
     const locations = locationsPayload.map(createDeliveryLocation);
 
     const mappedDeliveries = deliveryUseCase.calculateTrips(
@@ -84,7 +33,7 @@ describe('Should handle drone squad deliveries', () => {
       0
     );
 
-    expect(mappedDeliveries).toHaveLength(2);
+    expect(mappedDeliveries).toHaveLength(4);
     expect(totalMapped).toBe(locations.length);
 
     for (const droneRoute of mappedDeliveries) {
@@ -97,20 +46,37 @@ describe('Should handle drone squad deliveries', () => {
     }
   });
 
-  test('Should throw an error when not informing locations', async () => {
+  test('Should execute the delivery use case flow', async () => {
     const deliveryUseCase = new DeliveryUseCase();
 
-    const dronesPayload: IDroneSquadMember[] = [
-      {
-        name: 'Drone A',
-        maxWeight: 200,
-      },
-    ];
+    const locationsInfo: LocationsDTO = {
+      locations: locationsPayload,
+    };
+
+    const droneSquadInfo: DroneSquadDTO = {
+      drones: dronesPayload,
+    };
+
+    console.log(JSON.stringify({ locationsInfo, droneSquadInfo }));
+
+    const mappedDeliveries = await deliveryUseCase.execute(
+      droneSquadInfo,
+      locationsInfo
+    );
+
+    // console.log(JSON.stringify(mappedDeliveries[0]));
+    // console.log(mappedDeliveries.length);
+
+    expect(mappedDeliveries).toHaveLength(4);
+  });
+
+  test('Should throw an error when not informing locations', async () => {
+    const deliveryUseCase = new DeliveryUseCase();
 
     await expect(
       deliveryUseCase.execute(
         {
-          drones: dronesPayload,
+          drones: [dronesPayload[0]],
         },
         {
           locations: [],
