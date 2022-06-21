@@ -73,12 +73,23 @@ describe('Should handle drone squad deliveries', () => {
       deliveryUseCase.createDeliveryLocation
     );
 
-    const routes = deliveryUseCase.calculateDeliveries(droneSquad, locations);
+    const mappedDeliveries = deliveryUseCase.calculateTrips(
+      droneSquad,
+      locations
+    );
 
-    expect(routes).toHaveLength(3);
-    expect(routes[0]).toHaveProperty('drone');
-    expect(routes[0]).toHaveProperty('targets');
-    expect(routes[0]).toHaveProperty('idleCapacity');
+    const totalMapped = mappedDeliveries.reduce(
+      (acc, drone) =>
+        acc + drone.deliveries.reduce((ac, c) => ac + c.targets.length, 0),
+      0
+    );
+
+    expect(mappedDeliveries).toHaveLength(2);
+    expect(totalMapped).toBe(locations.length);
+
+    expect(mappedDeliveries[0].deliveries[0]).toHaveProperty('drone');
+    expect(mappedDeliveries[0].deliveries[0]).toHaveProperty('targets');
+    expect(mappedDeliveries[0].deliveries[0]).toHaveProperty('idleCapacity');
   });
 
   test('Should throw an error when not informing locations', async () => {

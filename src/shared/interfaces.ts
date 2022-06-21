@@ -6,3 +6,9 @@ export interface IDroneDelivery {
   idleCapacity: number;
   targets: DeliveryLocation[];
 }
+
+export interface ITripCollection {
+  tripId: string;
+  description: string;
+  deliveries: IDroneDelivery[];
+}

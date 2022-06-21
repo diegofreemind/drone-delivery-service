@@ -1,7 +1,7 @@
 import Drone from '../entities/Drone';
 import DeliveryPackage from '../entities/Package';
 import DeliveryLocation from '../entities/Location';
-import { IDroneDelivery } from '../shared/interfaces';
+import { IDroneDelivery, ITripCollection } from '../shared/interfaces';
 
 import { validatorDto } from '../shared/validatorDTO';
 import { LocationsDTO, ILocation } from './LocationsDTO';
@@ -20,7 +20,30 @@ export default class DeliveryUseCase {
     const droneSquad = drones.map(this.createSquadMember);
     const deliveryLocations = locations.map(this.createDeliveryLocation);
 
-    return this.calculateDeliveries(droneSquad, deliveryLocations);
+    return this.calculateTrips(droneSquad, deliveryLocations);
+  }
+
+  calculateTrips(
+    droneSquad: Drone[],
+    locations: DeliveryLocation[],
+    mappedDeliveries: ITripCollection[] = []
+  ): ITripCollection[] {
+    const { deliveries, unallocated } = this.calculateDeliveries(
+      droneSquad,
+      locations
+    );
+
+    mappedDeliveries!.push({
+      deliveries,
+      tripId: Math.random().toString(),
+      description: Math.random().toString(),
+    });
+
+    if (unallocated.length > 0) {
+      return this.calculateTrips(droneSquad, unallocated, mappedDeliveries);
+    }
+
+    return mappedDeliveries!;
   }
 
   calculateDeliveries(droneSquad: Drone[], locations: DeliveryLocation[]) {
@@ -30,10 +53,9 @@ export default class DeliveryUseCase {
     const sortedDroneSquad = this.sortDronesByHighestWeight(droneSquad);
     const sortedLocations = this.sortLocationsByLowestWeight(locations);
 
-    const deliveries = sortedDroneSquad.map((drone) => {
-      let remainingLocations = targetLocations[1]
-        ? targetLocations
-        : sortedLocations;
+    const deliveries: IDroneDelivery[] = sortedDroneSquad.map((drone) => {
+      let remainingLocations =
+        targetLocations.length > 0 ? targetLocations : sortedLocations;
 
       const { remaining, idleCapacity, targets } = this.matchLocationsByDrone(
         drone,
@@ -50,7 +72,10 @@ export default class DeliveryUseCase {
       };
     });
 
-    return deliveries;
+    return {
+      unallocated: targetLocations,
+      deliveries: deliveries.filter((item) => item.targets.length > 0),
+    };
   }
 
   matchLocationsByDrone(
@@ -76,9 +101,14 @@ export default class DeliveryUseCase {
       }
     });
 
+    const targets =
+      idleCapacity < drone.getMaxWeight
+        ? sortedLocations.filter((i) => squadLocationsAsMap.has(i))
+        : [];
+
     return {
+      targets,
       idleCapacity,
-      targets: sortedLocations.filter((i) => squadLocationsAsMap.has(i)),
       remaining: sortedLocations.filter((i) => !squadLocationsAsMap.has(i)),
     };
   }
