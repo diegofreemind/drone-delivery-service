@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { handleCSVInput, handleCSVOutput } from './shared/transformers';
 import { DeliveryUseCase } from './useCases';
 import { Command } from 'commander';

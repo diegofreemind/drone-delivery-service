@@ -1,20 +1,128 @@
+***BEGIN OUTPUT FILE #1***
 
  [DroneB]
 Trip #1
 [LocationO],[LocationL],[LocationN],[LocationK],[LocationG],[LocationC]
+
 ,Trip #2
 [LocationH],[LocationI]
+
 ,Trip #3
 [LocationF]
+
 ,Trip #4
 [LocationD]
+
 
 [DroneA]
 Trip #1
 [LocationM],[LocationJ]
+
 ,Trip #2
 [LocationE],[LocationP]
+
 ,Trip #3
 [LocationA]
+
 ,Trip #4
 [LocationB]
+
+
+ ***END OUTPUT FILE #1*** 
+
+***BEGIN OUTPUT FILE #1***
+
+ [DroneB]
+Trip #1
+[LocationO],[LocationL],[LocationN],[LocationK],[LocationG],[LocationC]
+
+,Trip #2
+[LocationH],[LocationI]
+
+,Trip #3
+[LocationF]
+
+,Trip #4
+[LocationD]
+
+
+[DroneA]
+Trip #1
+[LocationM],[LocationJ]
+
+,Trip #2
+[LocationE],[LocationP]
+
+,Trip #3
+[LocationA]
+
+,Trip #4
+[LocationB]
+
+
+ ***END OUTPUT FILE #1*** 
+
+***BEGIN OUTPUT FILE #1***
+
+ [DroneB]
+Trip #1
+[LocationO],[LocationL],[LocationN],[LocationK],[LocationG],[LocationC]
+
+,Trip #2
+[LocationH],[LocationI]
+
+,Trip #3
+[LocationF]
+
+,Trip #4
+[LocationD]
+
+
+[DroneA]
+Trip #1
+[LocationM],[LocationJ]
+
+,Trip #2
+[LocationE],[LocationP]
+
+,Trip #3
+[LocationA]
+
+,Trip #4
+[LocationB]
+
+
+ ***END OUTPUT FILE #1*** 
+
+***BEGIN OUTPUT FILE #1***
+
+ [DroneB]
+Trip #1
+[LocationO],[LocationL],[LocationN],[LocationK],[LocationG],[LocationC]
+
+,Trip #2
+[LocationH],[LocationI]
+
+,Trip #3
+[LocationF]
+
+,Trip #4
+[LocationD]
+
+
+[DroneA]
+Trip #1
+[LocationM],[LocationJ]
+
+,Trip #2
+[LocationE],[LocationP]
+
+,Trip #3
+[LocationA]
+
+,Trip #4
+[LocationB]
+
+
+ ***END OUTPUT FILE #1*** 
+

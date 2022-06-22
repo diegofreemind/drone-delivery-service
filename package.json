@@ -3,13 +3,16 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "bin": {
+    "drone-delivery": "./dist/index.js"
+  },
   "scripts": {
     "test": "jest",
-    "build": "tsc",
     "start": "tsc && node dist/index",
+    "build": "sh build.sh",
     "lint": "eslint \"{src,test}/**/*.ts\" --fix",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start:dev": "tsnd --transpile-only --respawn --ignore-watch node_modules src/index.ts"
+    "clean": "npm unlink drone-delivery && rm -rf dist",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\""
   },
   "devDependencies": {
     "@types/jest": "^28.1.2",

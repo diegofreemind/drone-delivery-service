@@ -4,7 +4,7 @@ import { IDroneDelivery, ITripCollection } from './interfaces';
 
 import { parse } from 'csv-parse';
 
-import { createReadStream, appendFile } from 'fs';
+import { createReadStream, appendFileSync } from 'fs';
 import { resolve } from 'path';
 
 async function handleCSVInput(inputPath: string) {
@@ -23,22 +23,19 @@ async function handleCSVOutput(
   const outputAbsPath = resolve(process.cwd(), outputPath);
   const parsedOutput = generateOutputResponse(response);
 
-  console.log(parsedOutput);
+  appendFileSync(outputAbsPath, '***BEGIN OUTPUT FILE #1***\n');
 
   for (const item in parsedOutput) {
     if (Object.prototype.hasOwnProperty.call(parsedOutput, item)) {
-      appendFile(
-        outputAbsPath,
-        parsedOutput[item].toString(),
-        'utf-8',
-        (err) => {
-          if (err) {
-            console.error(err);
-          }
-        }
-      );
+      try {
+        appendFileSync(outputAbsPath, parsedOutput[item].toString(), 'utf-8');
+      } catch (err) {
+        console.error(err);
+      }
     }
   }
+
+  appendFileSync(outputAbsPath, '\n ***END OUTPUT FILE #1*** \n\n');
 }
 
 function generateOutputResponse(response: ITripCollection[]) {
@@ -70,8 +67,8 @@ function generateOutputResponse(response: ITripCollection[]) {
 
 function formatOutputToPlain(formatted: any, isInitial: boolean) {
   return isInitial
-    ? `\n${formatted.name}\n${formatted.description}\n${formatted.locations}\n`
-    : `${formatted.description}\n${formatted.locations}\n`;
+    ? `\n${formatted.name}\n${formatted.description}\n${formatted.locations}\n\n`
+    : `${formatted.description}\n${formatted.locations}\n\n`;
 }
 
 function handleOutputFormat(
