@@ -2,10 +2,10 @@
 
 ## Project dependencies and tooling
 
-https://github.com/nvm-sh/nvm
+https://github.com/nvm-sh/nvm ( install npm and node versions )
 
 - [nodejs - v16.15.0](https://nodejs.org/en/blog/release/v16.15.0/)
-- [yarn - v1.22.18](https://github.com/yarnpkg/yarn/releases)
+- [npm - v8.5.5](https://github.com/npm/cli/releases)
 
 This project has been written in Visual Studio Code v1.68.1
 
@@ -62,17 +62,17 @@ The `DeliveryUseCase` implements the main algorithm:
 
 To run with default files path ( application root path )
 
-- `yarn run start execute`
+- `npm run start execute`
 
 To run with custom files path ( relative paths )
 
-- `yarn run start execute {inputPath} {outputPath}`
+- `npm run start execute {inputPath} {outputPath}`
 
 ### Executing the tests
 
-- `yarn run test`
+- `npm run test`
 
 ### Lint and Format
 
-- `yarn run lint`
-- `yarn run format`
+- `npm run lint`
+- `npm run format`

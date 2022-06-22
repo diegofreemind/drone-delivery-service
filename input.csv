@@ -1,4 +1,4 @@
-[DroneA], [200], [DroneB], [250], [DroneC], [100],
+[DroneA], [250], [DroneB], [200], [DroneC], [150], [DroneC], [120], [DroneD], [80]
 [LocationA], [200]
 [LocationB], [150]
 [LocationC], [50]
@@ -15,3 +15,10 @@
 [LocationN], [30]
 [LocationO], [20]
 [LocationP], [90]
+[LocationQ], [20]
+[LocationR], [120]
+[LocationS], [50]
+[LocationT], [80]
+[LocationU], [15]
+[LocationV], [45]
+[LocationX], [30]
