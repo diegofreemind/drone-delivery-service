@@ -40,7 +40,7 @@ The default path for output is located at the root of the project
 
 ### Algorithm
 
-The `DeliveryUseCase` implements the main algorithm, it executes the `calculateTrips` responsible for calculating deliveries:
+The `DeliveryUseCase` implements the main algorithm:
 
 `calculateTrips`
 
@@ -50,7 +50,7 @@ The `DeliveryUseCase` implements the main algorithm, it executes the `calculateT
 
 - sorts the drone squad based on higher weight capacity;
 - sorts the locations collection from lower to higher weight;
-- iterate over reduced locations collection for next drone;
+- iterate over unallocated locations subset for next drone available;
 
 `matchLocationsByDrone`
 
